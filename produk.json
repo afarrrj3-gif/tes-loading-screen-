@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "kategori": "ahli",
+    "foto": "https://res.cloudinary.com/dtdodhqqi/image/upload/v1767000000/produk1.jpg",
+    "harga": "50.000",
+    "sold": false,
+    "soldAt": null
+  },
+  {
+    "id": 2,
+    "kategori": "senior",
+    "foto": "https://res.cloudinary.com/dtdodhqqi/image/upload/v1767000001/produk2.jpg",
+    "harga": "75.000",
+    "sold": false,
+    "soldAt": null
+  },
+  {
+    "id": 3,
+    "kategori": "ahli",
+    "foto": "https://res.cloudinary.com/dtdodhqqi/image/upload/v1767000002/produk3.jpg",
+    "harga": "100.000",
+    "sold": true,
+    "soldAt": 1767000000000
+  }
+]
