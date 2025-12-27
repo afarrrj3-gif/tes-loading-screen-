@@ -5,103 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AryanzUtama Store</title>
 
-<!-- ICON -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
 /* ================= BASE ================= */
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   background:#f5fbff;
+  overflow-x:hidden;
 }
 
-/* ================= LOADING SCREEN ================= */
+/* ================= LOADING ================= */
 #loadingScreen{
   position:fixed;
   inset:0;
-  background:#f5fbff;
+  background:#fff;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   z-index:9999;
-  transition:.8s ease;
-}
-#loadingScreen.hide{
-  opacity:0;
-  visibility:hidden;
 }
 
-.loading-box{
-  width:80%;
-  max-width:320px;
-  text-align:center;
-}
-
-.logo-wrap{
+.loading-img{
   width:140px;
   height:140px;
-  margin:0 auto 20px;
-}
-
-.loading-logo{
-  width:100%;
-  height:100%;
   border-radius:50%;
-  object-fit:cover;
-  animation:denyut 1.6s infinite;
+  background:url("https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg") center/cover;
 }
 
-@keyframes denyut{
-  0%{transform:scale(1);box-shadow:0 0 0 rgba(77,163,255,.6)}
-  70%{transform:scale(1.06);box-shadow:0 0 0 20px rgba(77,163,255,0)}
-  100%{transform:scale(1);box-shadow:0 0 0 rgba(77,163,255,0)}
-}
-
-.progress-text{
-  font-size:20px;
-  font-weight:bold;
-}
-
-.progress-bar{
-  width:100%;
-  height:8px;
-  background:#dfefff;
+.progress{
+  width:220px;
+  height:6px;
+  background:#ddd;
   border-radius:10px;
-  margin:10px 0;
   overflow:hidden;
+  margin-top:25px;
 }
 
-.progress-fill{
+.progress span{
+  display:block;
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,#4da3ff,#7fc8ff);
-  transition:.4s ease;
+  background:#4da3ff;
+  transition:width .3s ease;
+}
+
+.percent{
+  margin-top:10px;
+  font-size:14px;
 }
 
 .loading-powered{
+  margin-top:18px;
   font-size:13px;
-  color:#777;
+  color:#888;
 }
 
 /* ================= BANNER ================= */
 .banner{
+  opacity:0;
+  transform:translateY(-20px);
+  transition:1s ease;
   padding:70px 15px 60px;
   text-align:center;
   background:
-    linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.8),#fff),
-    url("https://res.cloudinary.com/dtdodhqqi/image/upload/v1766772767/IMG-20251128-WA0091_ldbe9l.jpg");
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transform:translateY(-20px);
-  transition:.8s ease;
+    linear-gradient(
+      rgba(255,255,255,0),
+      rgba(255,255,255,.8),
+      #fff
+    ),
+    url("https://res.cloudinary.com/dtdodhqqi/image/upload/v1766772767/IMG-20251128-WA0091_ldbe9l.jpg") center/cover;
 }
+
 .banner.show{
   opacity:1;
-  transform:none;
+  transform:translateY(0);
 }
-.banner img{max-width:220px}
+
+.banner img{
+  max-width:220px;
+}
 
 /* ================= SEARCH ================= */
 header{
@@ -109,16 +95,22 @@ header{
   padding:15px;
   position:sticky;
   top:0;
-  box-shadow:0 4px 12px rgba(0,0,0,.05);
   z-index:10;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
 }
-.search-box{display:flex;gap:10px}
+
+.search-box{
+  display:flex;
+  gap:10px;
+}
+
 .search-box input{
   flex:1;
   padding:14px 18px;
   border-radius:30px;
   border:1px solid #ccc;
 }
+
 .search-box button{
   border:none;
   background:#4da3ff;
@@ -141,15 +133,42 @@ header{
   overflow:hidden;
   box-shadow:0 6px 18px rgba(0,0,0,.1);
   opacity:0;
-  transform:translateY(30px);
-  animation:masuk .6s forwards;
+  transform:translateY(30px) scale(.95);
+  animation:masuk .6s ease forwards;
 }
-@keyframes masuk{to{opacity:1;transform:none}}
+
+@keyframes masuk{
+  to{opacity:1;transform:none}
+}
+
+.card.sold img{
+  filter:grayscale(100%);
+  opacity:.6;
+}
 
 .card img{
   width:100%;
   aspect-ratio:4/5;
   object-fit:cover;
+  cursor:pointer;
+}
+
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#ff3b3b;
+  color:#fff;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:40px;
+  color:#555;
 }
 
 /* ================= MODAL ================= */
@@ -162,44 +181,71 @@ header{
   justify-content:center;
   z-index:99;
 }
+
 .modal.show{display:flex}
+
 .modal-content{
   background:#fff;
-  border-radius:18px;
   width:90%;
   max-width:420px;
-  padding:22px;
+  border-radius:18px;
+  padding:20px;
   text-align:center;
   animation:zoom .35s ease;
 }
-@keyframes zoom{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+
+@keyframes zoom{
+  from{transform:scale(.7);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
 
 .modal-content img{
   width:100%;
   border-radius:12px;
 }
+
 .pay-box{
-  background:#f3f6ff;
+  margin:10px 0;
+  background:#f3f3f3;
   padding:12px;
   border-radius:12px;
 }
+
 .btn{
   display:block;
   margin-top:10px;
   padding:12px;
   border-radius:25px;
   color:#fff;
-  font-weight:bold;
   text-decoration:none;
+  font-weight:bold;
 }
+
 .wa{background:#25D366}
 .ig{background:#E1306C}
+.tt{background:#000}
 
 /* ================= FOOTER ================= */
-.footer{text-align:center;padding:30px}
-.platform-bottom{display:flex;justify-content:center;gap:22px}
-.platform-bottom a{font-size:28px;color:#555}
-.powered{font-size:13px;color:#888}
+.footer{
+  text-align:center;
+  padding:30px 10px;
+}
+
+.platform-bottom{
+  display:flex;
+  justify-content:center;
+  gap:22px;
+}
+
+.platform-bottom a{
+  font-size:26px;
+  color:#555;
+}
+
+.powered{
+  font-size:13px;
+  color:#888;
+}
 </style>
 </head>
 
@@ -207,14 +253,10 @@ header{
 
 <!-- LOADING -->
 <div id="loadingScreen">
-  <div class="loading-box">
-    <div class="logo-wrap">
-      <img class="loading-logo" src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg">
-    </div>
-    <div class="progress-text"><span id="num">0</span>%</div>
-    <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
-    <div class="loading-powered">PoweredByAryanzUtama</div>
-  </div>
+  <div class="loading-img"></div>
+  <div class="progress"><span id="fill"></span></div>
+  <div class="percent"><span id="num">0</span>%</div>
+  <div class="loading-powered">PoweredByAryanzUtama</div>
 </div>
 
 <div class="banner">
@@ -230,22 +272,24 @@ header{
 
 <div class="container" id="produk"></div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766779896/IMG-20251222-WA0068_thougk.jpg">
-    <div class="pay-box">DANA<br>089688037479</div>
-    <a id="waBtn" class="btn wa">WhatsApp</a>
-    <a id="igBtn" class="btn ig">Instagram</a>
-    <div onclick="modal.classList.remove('show')">Tutup</div>
+    <div class="pay-box">
+      DANA<br>089688037479
+    </div>
+    <a id="waBtn" class="btn wa" target="_blank">WhatsApp</a>
+    <a id="igBtn" class="btn ig" target="_blank">Instagram</a>
+    <a id="ttBtn" class="btn tt" target="_blank">TikTok</a>
+    <div style="margin-top:10px;cursor:pointer" onclick="modal.classList.remove('show')">Tutup</div>
   </div>
 </div>
 
 <div class="footer">
   <div class="platform-bottom">
-    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
-    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+    <a href="https://wa.me/6289679520905" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/aryanz_stok" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@uryanzutama" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
   </div>
   <div class="powered">PoweredByAryanzUtama</div>
 </div>
@@ -258,39 +302,66 @@ const fill=document.getElementById("fill");
 const loading=document.getElementById("loadingScreen");
 const banner=document.querySelector(".banner");
 
-const sound=new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b6c78c9db.mp3");
-sound.volume=.3;
-sound.play().catch(()=>{});
-
-const t=setInterval(()=>{
+const timer=setInterval(()=>{
   p+=Math.random()*12;
-  if(p>100)p=100;
+  if(p>=100)p=100;
   num.textContent=Math.floor(p);
   fill.style.width=p+"%";
   if(p===100){
-    clearInterval(t);
+    clearInterval(timer);
     setTimeout(()=>{
-      loading.classList.add("hide");
+      loading.style.display="none";
       banner.classList.add("show");
-      sound.pause();
     },300);
   }
 },300);
 
 /* PRODUK */
 const container=document.getElementById("produk");
+const modal=document.getElementById("modal");
+const search=document.getElementById("search");
+const btnCari=document.getElementById("btnCari");
+
 fetch("./produk.json",{cache:"no-store"})
 .then(r=>r.json())
 .then(d=>{
-  d.forEach((p,i)=>{
+  tampilkan(d.filter(p=>{
+    if(!p.sold)return true;
+    return Date.now()-p.soldAt<86400000;
+  }));
+});
+
+function tampilkan(list){
+  container.innerHTML="";
+  if(!list.length){
+    container.innerHTML='<div class="empty">stok kategori yang kamu cari sedang kosong<br><b>hubungin AryanzUtama untuk melanjutkan</b></div>';
+    return;
+  }
+
+  list.forEach((p,i)=>{
     const c=document.createElement("div");
-    c.className="card";
+    c.className="card"+(p.sold?" sold":"");
     c.style.animationDelay=i*.1+"s";
-    c.innerHTML=`<img src="${p.foto}">`;
-    c.onclick=()=>document.getElementById("modal").classList.add("show");
+    c.innerHTML=`
+      ${p.sold?'<div class="badge">SOLD</div>':""}
+      <img src="${p.foto}">
+    `;
+    c.onclick=()=>{
+      modal.classList.add("show");
+      waBtn.href="https://wa.me/6289679520905";
+      igBtn.href="https://www.instagram.com/aryanz_stok";
+      ttBtn.href="https://www.tiktok.com/@uryanzutama";
+    };
     container.appendChild(c);
   });
-});
+}
+
+btnCari.onclick=()=>{
+  const v=search.value.toLowerCase();
+  fetch("./produk.json",{cache:"no-store"})
+  .then(r=>r.json())
+  .then(d=>tampilkan(d.filter(p=>p.kategori.toLowerCase()===v)));
+};
 </script>
 
 </body>
