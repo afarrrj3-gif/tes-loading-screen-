@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Admin AryanzUtama</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f2f6ff;
+}
+h2{
+  text-align:center;
+  padding:20px;
+}
+.container{
+  padding:15px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.card{
+  background:#fff;
+  border-radius:14px;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);
+  overflow:hidden;
+  position:relative;
+}
+.card img{
+  width:100%;
+  aspect-ratio:4/5;
+  object-fit:cover;
+}
+.info{
+  padding:10px;
+  font-size:14px;
+}
+button{
+  width:100%;
+  border:none;
+  padding:12px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.sold{
+  background:#ff3b3b;
+  color:#fff;
+}
+.unsold{
+  background:#4da3ff;
+  color:#fff;
+}
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#ff3b3b;
+  color:#fff;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>MODE ADMIN – KLIK SOLD</h2>
+<div class="container" id="list"></div>
+
+<script>
+const list=document.getElementById("list");
+let data=[];
+
+fetch("produk.json",{cache:"no-store"})
+.then(r=>r.json())
+.then(j=>{
+  data=j;
+  render();
+});
+
+function render(){
+  list.innerHTML="";
+  data.forEach(p=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.innerHTML=`
+      ${p.sold?'<div class="badge">SOLD</div>':''}
+      <img src="${p.foto}">
+      <div class="info">
+        <b>Kategori:</b> ${p.kategori}<br>
+        <b>Harga:</b> ${p.harga}
+      </div>
+      <button class="${p.sold?'unsold':'sold'}">
+        ${p.sold?'BATAL SOLD':'TANDAI SOLD'}
+      </button>
+    `;
+    c.querySelector("button").onclick=()=>toggleSold(p.id);
+    list.appendChild(c);
+  });
+}
+
+function toggleSold(id){
+  const p=data.find(x=>x.id===id);
+  if(!p)return;
+
+  if(p.sold){
+    p.sold=false;
+    p.soldAt=null;
+  }else{
+    p.sold=true;
+    p.soldAt=Date.now();
+  }
+
+  alert(
+`PERUBAHAN DISIMPAN DI MEMORI.
+👉 SEKARANG:
+1. Copy isi produk.json
+2. Paste manual ke file produk.json
+3. Commit ke GitHub`
+  );
+
+  render();
+}
+</script>
+
+</body>
+</html>
