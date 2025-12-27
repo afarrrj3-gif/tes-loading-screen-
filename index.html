@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AryanzUtama Store</title>
 
-<!-- ICON ASLI -->
+<!-- ICON -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
@@ -16,7 +16,7 @@ body{
   background:#f5fbff;
 }
 
-/* ================= LOADING SCREEN (TAMBAHAN) ================= */
+/* ================= LOADING SCREEN ================= */
 #loadingScreen{
   position:fixed;
   inset:0;
@@ -24,53 +24,64 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:99999;
+  z-index:9999;
+  transition:.8s ease;
+}
+#loadingScreen.hide{
+  opacity:0;
+  visibility:hidden;
 }
 
-.loader-box{
+.loading-box{
+  width:80%;
+  max-width:320px;
   text-align:center;
-  animation:fadeIn .6s ease;
 }
 
-.loader-box img{
+.logo-wrap{
   width:140px;
   height:140px;
+  margin:0 auto 20px;
+}
+
+.loading-logo{
+  width:100%;
+  height:100%;
   border-radius:50%;
   object-fit:cover;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
-  margin-bottom:20px;
+  animation:denyut 1.6s infinite;
 }
 
-.progress{
-  width:220px;
-  height:6px;
-  background:#dbe9ff;
+@keyframes denyut{
+  0%{transform:scale(1);box-shadow:0 0 0 rgba(77,163,255,.6)}
+  70%{transform:scale(1.06);box-shadow:0 0 0 20px rgba(77,163,255,0)}
+  100%{transform:scale(1);box-shadow:0 0 0 rgba(77,163,255,0)}
+}
+
+.progress-text{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.progress-bar{
+  width:100%;
+  height:8px;
+  background:#dfefff;
   border-radius:10px;
+  margin:10px 0;
   overflow:hidden;
-  margin:0 auto 12px;
 }
 
-.progress .bar{
+.progress-fill{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,#4da3ff,#7bb9ff);
-  animation:loadBar 3s linear forwards;
+  background:linear-gradient(90deg,#4da3ff,#7fc8ff);
+  transition:.4s ease;
 }
 
-.powered-loading{
+.loading-powered{
   font-size:13px;
   color:#777;
-  letter-spacing:.3px;
-}
-
-@keyframes loadBar{
-  from{width:0%}
-  to{width:100%}
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:scale(.95)}
-  to{opacity:1;transform:scale(1)}
 }
 
 /* ================= BANNER ================= */
@@ -78,19 +89,19 @@ body{
   padding:70px 15px 60px;
   text-align:center;
   background:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,.4) 45%,
-      rgba(255,255,255,.8) 75%,
-      #fff 100%
-    ),
+    linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.8),#fff),
     url("https://res.cloudinary.com/dtdodhqqi/image/upload/v1766772767/IMG-20251128-WA0091_ldbe9l.jpg");
   background-size:cover;
   background-position:center;
+  opacity:0;
+  transform:translateY(-20px);
+  transition:.8s ease;
 }
-
-.banner img{max-width:220px;}
+.banner.show{
+  opacity:1;
+  transform:none;
+}
+.banner img{max-width:220px}
 
 /* ================= SEARCH ================= */
 header{
@@ -101,8 +112,7 @@ header{
   box-shadow:0 4px 12px rgba(0,0,0,.05);
   z-index:10;
 }
-
-.search-box{display:flex;gap:10px;}
+.search-box{display:flex;gap:10px}
 .search-box input{
   flex:1;
   padding:14px 18px;
@@ -130,30 +140,16 @@ header{
   border-radius:16px;
   overflow:hidden;
   box-shadow:0 6px 18px rgba(0,0,0,.1);
-  transition:.25s;
   opacity:0;
-  transform:translateY(30px) scale(.97);
-  animation:produkMasuk .6s ease forwards;
+  transform:translateY(30px);
+  animation:masuk .6s forwards;
 }
-
-.card:hover{transform:translateY(-4px) scale(1);}
-
-@keyframes produkMasuk{
-  to{opacity:1;transform:translateY(0) scale(1);}
-}
+@keyframes masuk{to{opacity:1;transform:none}}
 
 .card img{
   width:100%;
   aspect-ratio:4/5;
   object-fit:cover;
-}
-
-/* ================= EMPTY & LOADING ================= */
-.empty,.loading{
-  grid-column:1/-1;
-  text-align:center;
-  padding:35px;
-  color:#555;
 }
 
 /* ================= MODAL ================= */
@@ -166,9 +162,9 @@ header{
   justify-content:center;
   z-index:99;
 }
-.modal.show{display:flex;}
+.modal.show{display:flex}
 .modal-content{
-  background:linear-gradient(180deg,#fafdff,#eaf4ff);
+  background:#fff;
   border-radius:18px;
   width:90%;
   max-width:420px;
@@ -176,50 +172,124 @@ header{
   text-align:center;
   animation:zoom .35s ease;
 }
-@keyframes zoom{
-  from{transform:scale(.7);opacity:0}
-  to{transform:scale(1);opacity:1}
+@keyframes zoom{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+
+.modal-content img{
+  width:100%;
+  border-radius:12px;
 }
+.pay-box{
+  background:#f3f6ff;
+  padding:12px;
+  border-radius:12px;
+}
+.btn{
+  display:block;
+  margin-top:10px;
+  padding:12px;
+  border-radius:25px;
+  color:#fff;
+  font-weight:bold;
+  text-decoration:none;
+}
+.wa{background:#25D366}
+.ig{background:#E1306C}
 
 /* ================= FOOTER ================= */
-.footer{text-align:center;padding:30px 10px 20px;}
-.platform-bottom{display:flex;justify-content:center;gap:22px;margin-bottom:12px;}
-.platform-bottom a{font-size:28px;color:#555;}
-.powered{font-size:13px;color:#888;}
+.footer{text-align:center;padding:30px}
+.platform-bottom{display:flex;justify-content:center;gap:22px}
+.platform-bottom a{font-size:28px;color:#555}
+.powered{font-size:13px;color:#888}
 </style>
 </head>
 
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADING -->
 <div id="loadingScreen">
-  <div class="loader-box">
-    <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg">
-    <div class="progress"><div class="bar"></div></div>
-    <div class="powered-loading">PoweredByAryanzUtama</div>
+  <div class="loading-box">
+    <div class="logo-wrap">
+      <img class="loading-logo" src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg">
+    </div>
+    <div class="progress-text"><span id="num">0</span>%</div>
+    <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+    <div class="loading-powered">PoweredByAryanzUtama</div>
   </div>
 </div>
 
-<div class="banner"><img src="logo.png"></div>
+<div class="banner">
+  <img src="logo.png">
+</div>
 
 <header>
   <div class="search-box">
-    <input id="search" placeholder="Cari kategori (ahli, senior)">
+    <input id="search" placeholder="Cari kategori">
     <button id="btnCari">🔍</button>
   </div>
 </header>
 
 <div class="container" id="produk"></div>
 
-<!-- SCRIPT ASLI + LOADING -->
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766779896/IMG-20251222-WA0068_thougk.jpg">
+    <div class="pay-box">DANA<br>089688037479</div>
+    <a id="waBtn" class="btn wa">WhatsApp</a>
+    <a id="igBtn" class="btn ig">Instagram</a>
+    <div onclick="modal.classList.remove('show')">Tutup</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="platform-bottom">
+    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+  </div>
+  <div class="powered">PoweredByAryanzUtama</div>
+</div>
+
 <script>
-window.addEventListener("load",()=>{
-  setTimeout(()=>{
-    const l=document.getElementById("loadingScreen");
-    l.style.opacity="0";
-    l.style.transition="opacity .5s ease";
-    setTimeout(()=>l.remove(),500);
-  },3000);
+/* LOADING */
+let p=0;
+const num=document.getElementById("num");
+const fill=document.getElementById("fill");
+const loading=document.getElementById("loadingScreen");
+const banner=document.querySelector(".banner");
+
+const sound=new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b6c78c9db.mp3");
+sound.volume=.3;
+sound.play().catch(()=>{});
+
+const t=setInterval(()=>{
+  p+=Math.random()*12;
+  if(p>100)p=100;
+  num.textContent=Math.floor(p);
+  fill.style.width=p+"%";
+  if(p===100){
+    clearInterval(t);
+    setTimeout(()=>{
+      loading.classList.add("hide");
+      banner.classList.add("show");
+      sound.pause();
+    },300);
+  }
+},300);
+
+/* PRODUK */
+const container=document.getElementById("produk");
+fetch("./produk.json",{cache:"no-store"})
+.then(r=>r.json())
+.then(d=>{
+  d.forEach((p,i)=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.style.animationDelay=i*.1+"s";
+    c.innerHTML=`<img src="${p.foto}">`;
+    c.onclick=()=>document.getElementById("modal").classList.add("show");
+    container.appendChild(c);
+  });
 });
 </script>
 
